@@ -45,9 +45,9 @@ if (! $user->admin) {
 // Parameters
 $action = GETPOST('action', 'alpha');
 $user_id = GETPOST('user', 'alpha');
+$id_player = GETPOST('id_player', 'alpha');
 
 $player = new DoligamePlayer($db);
-
 
 /*
  * Actions
@@ -69,6 +69,24 @@ if($action == 'add_player'){
         setEventMessage('NoUserSelected', 'error');
     }
 
+} elseif($action == 'remove_player'){
+
+    if(!empty($id_player)){
+
+        $res = $player->fetch($id_player);
+
+        if($res){
+
+            $res = $player->delete($user);
+
+            if($res > 0){
+                setEventMessage('UserDeleted');
+            }
+
+        } else{
+            setEventMessage('Error', 'error');
+        }
+    }
 }
 
 if (preg_match('/set_(.*)/', $action, $reg))
@@ -173,14 +191,17 @@ print '<br>';
 
 //Liste des joueurs
 
+print '<form action="'.$_SERVER["PHP_SELF"].'" method="post">';
+print '<input type="hidden" name="action" value="edit_player">';
+
 print '<table class="noborder centpercent">';
 
 print '<tr class="oddeven">';
 print '<th>'.$langs->trans('Player').'</th>';
 print '<th>'.$langs->trans('Level').'</th>';
 print '<th>'.$langs->trans('Xp').'</th>';
+print '<th>&nbsp;</th>';
 print '</tr>';
-
 
 foreach($TPlayers as $player){
 
@@ -196,13 +217,16 @@ foreach($TPlayers as $player){
     print '<td class="center">';
     print $player->total_xp;
     print '</td>';
+
+    print '<td class = "linecoldelete center"><a href='.$_SERVER['PHP_SELF'].'?action=remove_player&id_player='.$player->id.'>'. img_picto($langs->trans("Delete"), 'delete') . '</a></td>';
+
     print '</tr>';
 
 }
 
-
 print '</table>';
 
+print '</form>';
 
 
 print '</table>';
