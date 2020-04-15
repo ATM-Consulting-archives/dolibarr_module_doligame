@@ -30,6 +30,7 @@ if (! $res) {
 // Libraries
 require_once DOL_DOCUMENT_ROOT . '/core/lib/admin.lib.php';
 require_once '../lib/doligame.lib.php';
+require_once '../class/doligame_player.class.php';
 dol_include_once('abricot/includes/lib/admin.lib.php');
 
 
@@ -43,10 +44,33 @@ if (! $user->admin) {
 
 // Parameters
 $action = GETPOST('action', 'alpha');
+$user_id = GETPOST('user', 'alpha');
+
+$player = new DoligamePlayer($db);
+
 
 /*
  * Actions
  */
+
+if($action == 'add_player'){
+
+    if(!empty($user_id)){
+
+        $player->fk_user = $user_id;
+        $res = $player->save($user);
+
+        if($res > 0){
+            setEventMessage('UserAdded');
+        } else {
+            setEventMessage('Error', 'error');
+        }
+    } else {
+        setEventMessage('NoUserSelected', 'error');
+    }
+
+}
+
 if (preg_match('/set_(.*)/', $action, $reg))
 {
     $code=$reg[1];
@@ -108,12 +132,20 @@ if(!function_exists('setup_print_title')){
     exit;
 }
 
+
+//Ajout de joueurs
+
 setup_print_title("AddPlayers");
 
-//Liste d'utilisateurs à ajouter
-
-//TODO : exclure les utilisateurs déjà enregistrés en tant que joueur
+//Utilisateurs qui sont déjà des joueurs
 $TUsersExclude = array();
+$TPlayers = $player->fetchAll();
+
+if($res > 0){
+    foreach($TPlayers as $player){
+        $TUsersExclude[] = $player->fk_user;
+    }
+}
 
 print '<form action="'.$_SERVER["PHP_SELF"].'" method="post">';
 print '<input type="hidden" name="action" value="add_player">';
@@ -123,7 +155,7 @@ print '<table class="noborder centpercent">';
 print '<tr class="oddeven">';
 print '<td>';
 print '<label>'.$langs->trans("Users").'</label>';
-print $form->select_users('', '', '', $TUsersExclude);
+print $form->select_users('', 'user', '', $TUsersExclude);
 print '</td>';
 print '</tr>';
 
@@ -137,6 +169,7 @@ print '</form>';
 
 
 print '</table>';
+
 
 dol_fiche_end(-1);
 

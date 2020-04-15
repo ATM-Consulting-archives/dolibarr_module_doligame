@@ -77,6 +77,9 @@ class DoligamePlayer extends SeedObject
 
         $this->init();
 
+        $this->level = 0;
+        $this->total_xp = 0;
+        $this->levelup_xp = 50;
         $this->entity = $conf->entity;
     }
 

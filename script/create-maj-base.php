@@ -33,17 +33,6 @@ dol_include_once('/doligame/class/doligame_player.class.php');
 $o=new DoligamePlayer($db);
 $o->init_db_by_vars();
 
-// Création des tables en base de données
 dol_include_once('/doligame/class/doligame_player_xp.class.php');
 $o=new DoligamePlayerXp($db);
 $o->init_db_by_vars();
-
-
-/* uncomment
-
-
-dol_include_once('/doligame/class/doligame.class.php');
-
-$o=new doligame($db);
-$o->init_db_by_vars();
-*/
