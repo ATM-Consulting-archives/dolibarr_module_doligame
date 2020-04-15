@@ -38,10 +38,14 @@ function doligameAdminPrepareHead()
     $head[$h][1] = $langs->trans("Parameters");
     $head[$h][2] = 'settings';
     $h++;
-    $head[$h][0] = dol_buildpath("/doligame/admin/doligame_extrafields.php", 1);
-    $head[$h][1] = $langs->trans("ExtraFields");
-    $head[$h][2] = 'extrafields';
+    $head[$h][0] = dol_buildpath("/doligame/admin/players_setup.php", 1);
+    $head[$h][1] = $langs->trans("PlayersSetup");
+    $head[$h][2] = 'players_setup';
     $h++;
+//    $head[$h][0] = dol_buildpath("/doligame/admin/doligame_extrafields.php", 1);
+//    $head[$h][1] = $langs->trans("ExtraFields");
+//    $head[$h][2] = 'extrafields';
+//    $h++;
     $head[$h][0] = dol_buildpath("/doligame/admin/doligame_about.php", 1);
     $head[$h][1] = $langs->trans("About");
     $head[$h][2] = 'about';
