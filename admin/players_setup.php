@@ -168,8 +168,44 @@ print '</div>';
 print '</form>';
 
 
+print '<br>';
+
+
+//Liste des joueurs
+
+print '<table class="noborder centpercent">';
+
+print '<tr class="oddeven">';
+print '<th>'.$langs->trans('Player').'</th>';
+print '<th>'.$langs->trans('Level').'</th>';
+print '<th>'.$langs->trans('Xp').'</th>';
+print '</tr>';
+
+
+foreach($TPlayers as $player){
+
+    print '<tr >';
+    print '<td class="center">';
+    print $player->getUserLogin();
+    print '</td>';
+
+    print '<td class="center">';
+    print $player->level;
+    print '</td>';
+
+    print '<td class="center">';
+    print $player->total_xp;
+    print '</td>';
+    print '</tr>';
+
+}
+
+
 print '</table>';
 
+
+
+print '</table>';
 
 dol_fiche_end(-1);
 

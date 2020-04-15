@@ -92,4 +92,23 @@ class DoligamePlayer extends SeedObject
         return $this->create($user);
     }
 
+    public function getUserLogin(){
+
+        $sql = "SELECT login FROM ".MAIN_DB_PREFIX."user u";
+        $sql .= " JOIN ".MAIN_DB_PREFIX."doligame_player p ON p.fk_user = u.rowid";
+        $sql .= " WHERE p.fk_user = '".$this->fk_user."'";
+
+        $resql = $this->db->query($sql);
+
+        if($resql){
+
+            $obj = $this->db->fetch_object($resql);
+
+            return $obj->login;
+        } else {
+            return -1;
+        }
+
+    }
+
 }
