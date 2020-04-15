@@ -17,6 +17,11 @@ doligameNewRightsDefinedCheckUserRights=Ce module utilise ces propres droits uti
 ParamLabel=Nom du paramètre
 ParamDesc=Une description si besoin
 ParamHelp=Le contenu de l'aide
+PlayersSetup=Joueurs
+AddPlayers=Ajouter des joueurs
+AddPlayer=Ajouter un joueur
+Player=Joueur
+Level=Niveau
 
 # MENU
 TopMenudoligame=doligame
