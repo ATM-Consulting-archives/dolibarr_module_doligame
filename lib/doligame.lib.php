@@ -140,7 +140,7 @@ function getFormConfirmdoligame($form, $object, $action)
     return $formconfirm;
 }
 
-function addXp($player_id, $xp, $code_action){
+function addXp($xp, $code_action){
 
     global $db, $user;
 
@@ -150,49 +150,53 @@ function addXp($player_id, $xp, $code_action){
     require_once DOL_DOCUMENT_ROOT.'/custom/doligame/class/doligame_player.class.php';
 
     $player = new DoligamePlayer($db);
-    $res = $player->fetch($player_id);
+    $res = $player->fetchByUser($user->id);
 
-    if($res > 0){
-
+    if ($res > 0)
+    {
         $playerXp = new DoligamePlayerXp($db);
-        $res = $playerXp->fetchByAction($player_id, $code_action);
+        $res = $playerXp->fetchByAction($player->id, $code_action);
 
-        if($res > 0){
-
+        if ($res > 0)
+        {
             $playerXp->xp += $xp;
             $res = $playerXp->update($user);
 
-            if($res < 0){
-                $error ++;
+            if ($res < 0)
+            {
+                $error++;
             }
-
-        } else {
+        }
+        else{
 
             $playerXp->code_action = $code_action;
-            $playerXp->fk_player = $player_id;
+            $playerXp->fk_player = $player->id;
             $playerXp->xp = $xp;
 
             $res = $playerXp->create($user);
 
-            if($res < 0){
-                $error ++;
+            if ($res < 0)
+            {
+                $error++;
             }
         }
 
         $res = $player->updatePlayerXp();
 
-        if($res < 0){
-            $error ++;
+        if ($res < 0)
+        {
+            $error++;
         }
-
     } else {
-        $error ++;
+        $error++;
     }
 
-    if(!$error){
+    if (!$error)
+    {
         return 1;
-    } else {
+    }
+    else
+    {
         return -1;
     }
-
 }
