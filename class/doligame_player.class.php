@@ -111,4 +111,75 @@ class DoligamePlayer extends SeedObject
 
     }
 
+    public function updatePlayerXp(){
+
+        global $user;
+
+        $sql = "SELECT SUM (xp) as total_xp FROM ".MAIN_DB_PREFIX."doligame_player_xp WHERE fk_player = '".$this->id."'";
+        $resql = $this->db->query($sql);
+
+        if($resql)
+        {
+            $obj = $this->db->fetch_object($resql);
+            $this->total_xp = $obj->total_xp;
+
+            if($this->total_xp >= $this->levelup_xp){
+
+                $xp_rest = $this->levelUp();
+
+                if($xp_rest < 0) return -1;
+
+                while($xp_rest >= $this->levelup_xp){
+
+                    $xp_rest = $this->levelUp();
+
+                    if($xp_rest < 0) return -1;
+                }
+            }
+        }
+
+        $res = $this->update($user, true);
+
+        return $res;
+    }
+
+
+    private function levelUp(){
+
+        $xp_rest = $this->total_xp - $this->levelup_xp;
+
+        if($xp_rest >= 0)
+        {
+            $this->level++;
+            $this->levelup_xp = $this->getLevelUpXp();
+            return $xp_rest;
+        }
+        else {
+            return -1;
+        }
+    }
+
+    private function getLevelUpXp(){
+
+        return $this->levelup_xp + ($this->levelup_xp * 0.10);
+
+    }
+
+    public function fetchByUser($fk_user){
+
+        $sql = "SELECT rowid FROM ".MAIN_DB_PREFIX."doligame_player WHERE fk_user = '".$fk_user."'";
+        $resql = $this->db->query($sql);
+
+        if($resql){
+            $obj = $this->db->fetch_object($resql);
+
+            $res = $this->fetch($obj->rowid);
+
+            return $res;
+        } else {
+            return -1;
+        }
+
+    }
+
 }

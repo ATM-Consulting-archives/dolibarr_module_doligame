@@ -298,6 +298,21 @@ class Interfacedoligametrigger
 
         // Proposals
         elseif ($action == 'PROPAL_CREATE') {
+
+            global $db;
+
+            require_once DOL_DOCUMENT_ROOT.'/custom/doligame/class/doligame_player_xp.class.php';
+            require_once DOL_DOCUMENT_ROOT.'/custom/doligame/class/doligame_player.class.php';
+            require_once DOL_DOCUMENT_ROOT.'/custom/doligame/lib/doligame.lib.php';
+
+            $player = new DoligamePlayer($db);
+            $res = $player->fetchByUser($user->id);
+
+            if($res > 0){
+                $xp = 100;
+                addXp($player->id, $xp, $action);
+            }
+
             dol_syslog(
                 "Trigger '" . $this->name . "' for action '$action' launched by " . __FILE__ . ". id=" . $object->id
             );

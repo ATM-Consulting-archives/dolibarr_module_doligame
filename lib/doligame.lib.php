@@ -139,3 +139,60 @@ function getFormConfirmdoligame($form, $object, $action)
 
     return $formconfirm;
 }
+
+function addXp($player_id, $xp, $code_action){
+
+    global $db, $user;
+
+    $error = 0;
+
+    require_once DOL_DOCUMENT_ROOT.'/custom/doligame/class/doligame_player_xp.class.php';
+    require_once DOL_DOCUMENT_ROOT.'/custom/doligame/class/doligame_player.class.php';
+
+    $player = new DoligamePlayer($db);
+    $res = $player->fetch($player_id);
+
+    if($res > 0){
+
+        $playerXp = new DoligamePlayerXp($db);
+        $res = $playerXp->fetchByAction($code_action);
+
+        if($res > 0){
+
+            $playerXp->xp += $xp;
+            $res = $playerXp->update($user);
+
+            if($res < 0){
+                $error ++;
+            }
+
+        } else {
+
+            $playerXp->code_action = $code_action;
+            $playerXp->fk_player = $player_id;
+            $playerXp->xp = $xp;
+
+            $res = $playerXp->create($user);
+
+            if($res < 0){
+                $error ++;
+            }
+        }
+
+        $res = $player->updatePlayerXp();
+
+        if($res < 0){
+            $error ++;
+        }
+
+    } else {
+        $error ++;
+    }
+
+    if(!$error){
+        return 1;
+    } else {
+        return -1;
+    }
+
+}

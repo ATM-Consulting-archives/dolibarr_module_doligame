@@ -79,4 +79,16 @@ class DoligamePlayerXp extends SeedObject
         return $this->create($user);
     }
 
+    public function fetchByAction($code_action){
+
+        $sql = "SELECT rowid FROM ".MAIN_DB_PREFIX."doligame_player_xp WHERE code_action='".$code_action."'";
+        $resql = $this->db->query($sql);
+
+        if($resql){
+
+            $obj = $this->db->fetch_object($resql);
+            return $this->fetch($obj->rowid);
+        }
+    }
+
 }
