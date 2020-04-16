@@ -123,20 +123,25 @@ class DoligamePlayer extends SeedObject
 
         global $user;
 
+        //somme de tous les xps du joueur
         $sql = "SELECT SUM (xp) as total_xp FROM ".MAIN_DB_PREFIX."doligame_player_xp WHERE fk_player = '".$this->id."'";
         $resql = $this->db->query($sql);
 
         if($resql)
         {
             $obj = $this->db->fetch_object($resql);
+
+            //mise à jour du total d'xp
             $this->total_xp = $obj->total_xp;
 
+            //si le total d'xp ext supérieur ou égal au total d'xp nécessaire pour monter de niveau, alors on monte de niveau
             if($this->total_xp >= $this->levelup_xp){
 
                 $xp_rest = $this->levelUp();
 
                 if($xp_rest < 0) return -1;
 
+                //tant que le reste d'xp est supérieur ou égal à l'xp nécessaire pour monter de niveau, alors on monte de niveau
                 while($xp_rest >= $this->levelup_xp){
 
                     $xp_rest = $this->levelUp();
@@ -146,6 +151,7 @@ class DoligamePlayer extends SeedObject
             }
         }
 
+        //mise à jour du joueur
         $res = $this->update($user, true);
 
         return $res;
