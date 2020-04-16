@@ -77,7 +77,7 @@ class DoligamePlayer extends SeedObject
 
         $this->init();
 
-        $this->level = 0;
+        $this->level = 1;
         $this->total_xp = 0;
         $this->levelup_xp = 50;
         $this->entity = $conf->entity;
@@ -151,18 +151,12 @@ class DoligamePlayer extends SeedObject
         if($xp_rest >= 0)
         {
             $this->level++;
-            $this->levelup_xp = $this->getLevelUpXp();
+            $this->levelup_xp += $this->levelup_xp + ($this->levelup_xp * 0.10);
             return $xp_rest;
         }
         else {
             return -1;
         }
-    }
-
-    private function getLevelUpXp(){
-
-        return $this->levelup_xp + ($this->levelup_xp * 0.10);
-
     }
 
     public function fetchByUser($fk_user){

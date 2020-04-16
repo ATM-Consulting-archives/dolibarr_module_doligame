@@ -309,7 +309,7 @@ class Interfacedoligametrigger
             $res = $player->fetchByUser($user->id);
 
             if($res > 0){
-                $xp = 100;
+                $xp = 10;
                 addXp($player->id, $xp, $action);
             }
 

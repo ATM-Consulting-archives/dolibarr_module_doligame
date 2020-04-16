@@ -79,6 +79,8 @@ if($action == 'add_player'){
 
             $res = $player->delete($user);
 
+            //TODO : supprimer tous les xp associés
+
             if($res > 0){
                 setEventMessage('UserDeleted');
             }
