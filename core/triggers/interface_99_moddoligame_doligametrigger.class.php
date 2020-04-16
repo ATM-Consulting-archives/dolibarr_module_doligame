@@ -137,15 +137,22 @@ class Interfacedoligametrigger
         // Put here code you want to execute when a Dolibarr business events occurs.
         // Data and type of action are stored into $object and $action
         // Users
-        if (strstr($action, 'CREATE')) {
-
+        if (strstr($action, 'CREATE'))
+        {
             if($action != 'DOLIGAMEPLAYER_CREATE' &&  $action != 'DOLIGAMEPLAYERXP_CREATE')
             {
                 $res = addXp(10, $action);
-
                 return $res;
             }
-
+        } elseif(strstr($action, 'SIGNED'))
+        {
+            $res = addXp(20, $action);
+            return $res;
+        }
+        elseif(strstr($action, 'PAYED'))
+        {
+            $res = addXp(30, $action);
+            return $res;
         }
 
         return 0;
