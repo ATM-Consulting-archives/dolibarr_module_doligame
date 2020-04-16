@@ -92,6 +92,10 @@ class DoligamePlayer extends SeedObject
         return $this->create($user);
     }
 
+    /**
+     * Return login of user's player
+     * @return string if OK, -1 if KO
+     */
     public function getUserLogin(){
 
         $sql = "SELECT login FROM ".MAIN_DB_PREFIX."user u";
@@ -111,6 +115,10 @@ class DoligamePlayer extends SeedObject
 
     }
 
+    /**
+     * Update Xp and level of the player
+     * @return int >0 if OK, -1 if KO
+     */
     public function updatePlayerXp(){
 
         global $user;
@@ -144,6 +152,10 @@ class DoligamePlayer extends SeedObject
     }
 
 
+    /**
+     * Level up the player
+     * @return int >= if OK, -1 if KO
+     */
     private function levelUp(){
 
         $xp_rest = $this->total_xp - $this->levelup_xp;
@@ -159,6 +171,11 @@ class DoligamePlayer extends SeedObject
         }
     }
 
+    /**
+     * Fetch player by the user id
+     * @param User $fk_user User id
+     * @return >0 if OK, -1 if KO
+     */
     public function fetchByUser($fk_user){
 
         $sql = "SELECT rowid FROM ".MAIN_DB_PREFIX."doligame_player WHERE fk_user = '".$fk_user."'";

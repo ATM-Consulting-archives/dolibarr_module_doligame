@@ -79,6 +79,12 @@ class DoligamePlayerXp extends SeedObject
         return $this->create($user);
     }
 
+    /**
+     * Fetch player xp of a player by code_action
+     * @param int $player_id Player Id
+     * @param string $code_action Action code
+     * @return int >0 if OK, -1 if KO
+     */
     public function fetchByAction($player_id, $code_action){
 
         $sql = "SELECT rowid FROM ".MAIN_DB_PREFIX."doligame_player_xp WHERE code_action='".$code_action."' AND fk_player = '".$player_id."'";
@@ -91,6 +97,11 @@ class DoligamePlayerXp extends SeedObject
         }
     }
 
+    /**
+     * Fetch all player xp of a player
+     * @param int $player_id Player Id
+     * @return int >0 if OK, -1 if KO
+     */
     public function fetchAllByPlayer($player_id){
 
         $sql = "SELECT rowid as id, xp FROM ".MAIN_DB_PREFIX."doligame_player_xp WHERE fk_player ='". $player_id ."'";

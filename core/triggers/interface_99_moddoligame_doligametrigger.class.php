@@ -134,9 +134,7 @@ class Interfacedoligametrigger
      */
     public function run_trigger($action, $object, $user, $langs, $conf)
     {
-        // Put here code you want to execute when a Dolibarr business events occurs.
-        // Data and type of action are stored into $object and $action
-        // Users
+        //Ajout des points d'expériences par type d'action
         if (strstr($action, 'CREATE'))
         {
             if($action != 'DOLIGAMEPLAYER_CREATE' &&  $action != 'DOLIGAMEPLAYERXP_CREATE')
