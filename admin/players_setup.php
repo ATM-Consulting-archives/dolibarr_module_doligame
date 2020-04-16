@@ -31,6 +31,7 @@ if (! $res) {
 require_once DOL_DOCUMENT_ROOT . '/core/lib/admin.lib.php';
 require_once '../lib/doligame.lib.php';
 require_once '../class/doligame_player.class.php';
+require_once '../class/doligame_player_xp.class.php';
 dol_include_once('abricot/includes/lib/admin.lib.php');
 
 
@@ -48,6 +49,7 @@ $user_id = GETPOST('user', 'alpha');
 $id_player = GETPOST('id_player', 'alpha');
 
 $player = new DoligamePlayer($db);
+$playerXp = new DoligamePlayerXp($db);
 
 /*
  * Actions
@@ -77,12 +79,27 @@ if($action == 'add_player'){
 
         if($res){
 
-            $res = $player->delete($user);
+            $TPlayerXps = $playerXp->fetchAllByPlayer($player->id);
 
-            //TODO : supprimer tous les xp associés
+            if(is_array($TPlayerXps)){
 
-            if($res > 0){
+                foreach($TPlayerXps as $player_xp){
+
+                    $res = $playerXp->fetch($player_xp->id);
+
+                    if($res > 0){
+                        $playerXp->delete($user);
+                    } else{
+                        setEventMessage('Error', 'error');
+
+                    }
+                }
+
+                $res = $player->delete($user);
                 setEventMessage('UserDeleted');
+
+            } else {
+                setEventMessage('Error', 'error');
             }
 
         } else{

@@ -155,7 +155,7 @@ function addXp($player_id, $xp, $code_action){
     if($res > 0){
 
         $playerXp = new DoligamePlayerXp($db);
-        $res = $playerXp->fetchByAction($code_action);
+        $res = $playerXp->fetchByAction($player_id, $code_action);
 
         if($res > 0){
 

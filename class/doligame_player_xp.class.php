@@ -79,9 +79,9 @@ class DoligamePlayerXp extends SeedObject
         return $this->create($user);
     }
 
-    public function fetchByAction($code_action){
+    public function fetchByAction($player_id, $code_action){
 
-        $sql = "SELECT rowid FROM ".MAIN_DB_PREFIX."doligame_player_xp WHERE code_action='".$code_action."'";
+        $sql = "SELECT rowid FROM ".MAIN_DB_PREFIX."doligame_player_xp WHERE code_action='".$code_action."' AND fk_player = '".$player_id."'";
         $resql = $this->db->query($sql);
 
         if($resql){
@@ -89,6 +89,26 @@ class DoligamePlayerXp extends SeedObject
             $obj = $this->db->fetch_object($resql);
             return $this->fetch($obj->rowid);
         }
+    }
+
+    public function fetchAllByPlayer($player_id){
+
+        $sql = "SELECT rowid as id, xp FROM ".MAIN_DB_PREFIX."doligame_player_xp WHERE fk_player ='". $player_id ."'";
+        $resql = $this->db->query($sql);
+
+        if($resql){
+
+            $TPlayerXps = array();
+
+            while($obj = $this->db->fetch_object($resql)){
+                $TPlayerXps[] = $obj;
+            }
+
+            return $TPlayerXps;
+        } else {
+            return -1;
+        }
+
     }
 
 }
