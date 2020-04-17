@@ -234,7 +234,7 @@ foreach($TPlayers as $player){
     print '</td>';
 
     print '<td class="center">';
-    print $player->total_xp;
+    print  DoligamePlayer::getXpForLevel($player->level - 1 ) .' | '. $player->total_xp .' | '. DoligamePlayer::getXpForLevel($player->level);
     print '</td>';
 
     print '<td class = "linecoldelete center"><a href='.$_SERVER['PHP_SELF'].'?action=remove_player&id_player='.$player->id.'>'. img_picto($langs->trans("Delete"), 'delete') . '</a></td>';

@@ -77,10 +77,10 @@ class DoligamePlayer extends SeedObject
 
         $this->init();
 
-        $this->level = 1;
+        $this->level = 0;
         $this->total_xp = 0;
-        $this->levelup_xp = 50;
         $this->entity = $conf->entity;
+        $this->levelUp();
     }
 
     /**
@@ -137,22 +137,13 @@ class DoligamePlayer extends SeedObject
             //si le total d'xp ext supérieur ou égal au total d'xp nécessaire pour monter de niveau, alors on monte de niveau
             if($this->total_xp >= $this->levelup_xp){
 
-                $xp_rest = $this->levelUp();
-
-                if($xp_rest < 0) return -1;
-
-                //tant que le reste d'xp est supérieur ou égal à l'xp nécessaire pour monter de niveau, alors on monte de niveau
-                while($xp_rest >= $this->levelup_xp){
-
-                    $xp_rest = $this->levelUp();
-
-                    if($xp_rest < 0) return -1;
-                }
+                while($this->levelUp() >= 0){}
             }
+
         }
 
         //mise à jour du joueur
-        $res = $this->update($user, true);
+        $res = $this->update($user);
 
         return $res;
     }
@@ -169,7 +160,7 @@ class DoligamePlayer extends SeedObject
         if($xp_rest >= 0)
         {
             $this->level++;
-            $this->levelup_xp += $this->levelup_xp + ($this->levelup_xp * 0.10);
+            $this->levelup_xp = self::getXpForLevel($this->level);
             return $xp_rest;
         }
         else {
@@ -198,4 +189,11 @@ class DoligamePlayer extends SeedObject
         }
 
     }
+
+    public static function getXpForLevel($level){
+
+        return round((50 + (4 * $level)) * $level);
+
+    }
+
 }

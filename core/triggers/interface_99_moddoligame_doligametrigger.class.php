@@ -144,7 +144,7 @@ class Interfacedoligametrigger
             }
         } elseif(strstr($action, 'SIGNED'))
         {
-            $res = addXp(20, $action);
+            $res = addXp(64, $action);
             return $res;
         }
         elseif(strstr($action, 'PAYED'))
